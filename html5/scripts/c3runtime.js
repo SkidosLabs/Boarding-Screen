@@ -3860,6 +3860,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite.Acts.SetDefaultColor,
 		C3.Plugins.System.Acts.AddVar,
 		C3.Plugins.Sprite.Acts.SetInstanceVar,
+		C3.Plugins.System.Cnds.Compare,
 		C3.Plugins.System.Acts.SetFunctionReturnValue,
 		C3.Plugins.Sprite.Cnds.IsBoolInstanceVarSet,
 		C3.Plugins.Sprite.Cnds.PickChildren,
@@ -3869,8 +3870,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Touch.Cnds.IsTouchingObject,
 		C3.Plugins.System.Exps.len,
 		C3.Plugins.System.Cnds.ForEach,
-		C3.Plugins.Arr.Acts.Push,
-		C3.Plugins.System.Cnds.Compare
+		C3.Plugins.Arr.Acts.Push
 	];
 };
 self.C3_JsPropNameTable = [
@@ -4105,29 +4105,25 @@ self.C3_ExpressionFuncs = [
 			const n0 = p._GetNode(0);
 			const v1 = p._GetNode(1).GetVar();
 			const v2 = p._GetNode(2).GetVar();
-			const v3 = p._GetNode(3).GetVar();
-			const v4 = p._GetNode(4).GetVar();
-			return () => ((n0.ExpObject() - ((v1.GetValue() - 1) * (v2.GetValue() / 2))) + (v3.GetValue() / (v4.GetValue() - 1)));
+			return () => (n0.ExpObject() - ((v1.GetValue() - 1) * (v2.GetValue() / 2)));
 		},
 		() => 693982,
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			return () => (v0.GetValue() - 10);
 		},
-		() => "extra",
 		p => {
 			const n0 = p._GetNode(0);
 			const v1 = p._GetNode(1).GetVar();
 			return () => (n0.ExpObject() - v1.GetValue());
 		},
+		() => "extra",
 		p => {
 			const n0 = p._GetNode(0);
 			const v1 = p._GetNode(1).GetVar();
 			const n2 = p._GetNode(2);
 			const v3 = p._GetNode(3).GetVar();
-			const v4 = p._GetNode(4).GetVar();
-			const v5 = p._GetNode(5).GetVar();
-			return () => ((n0.ExpObject() - (v1.GetValue() * (((n2.ExpObject() - v3.GetValue()) - 1) / 2))) + (v4.GetValue() / (v5.GetValue() - 1)));
+			return () => (n0.ExpObject() - (v1.GetValue() * (((n2.ExpObject() - v3.GetValue()) - 1) / 2)));
 		},
 		p => {
 			const v0 = p._GetNode(0).GetVar();
@@ -4160,13 +4156,6 @@ self.C3_ExpressionFuncs = [
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			return () => (v0.GetValue() + 20);
-		},
-		p => {
-			const n0 = p._GetNode(0);
-			const v1 = p._GetNode(1).GetVar();
-			const n2 = p._GetNode(2);
-			const v3 = p._GetNode(3).GetVar();
-			return () => (n0.ExpObject() - (v1.GetValue() * (((n2.ExpObject() - v3.GetValue()) - 1) / 2)));
 		}
 ];
 
