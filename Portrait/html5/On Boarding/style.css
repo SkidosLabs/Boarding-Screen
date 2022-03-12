@@ -42,3 +42,8 @@ html, body, canvas {
 	src: url('fonts/hvd fonts - mikadobold.otf') format('opentype');
 }
 
+@font-face {
+	font-family: 'hvd fonts - mikadolight';
+	src: url('fonts/hvd fonts - mikadolight.otf') format('opentype');
+}
+
