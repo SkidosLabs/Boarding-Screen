@@ -3677,6 +3677,53 @@ if(!wi||!imageInfo)return;if(lastSetCursor===imageInfo)return;lastSetCursor=imag
 }
 
 {
+'use strict';{const C3=self.C3;const DOM_COMPONENT_ID="html-element";C3.Plugins.HTMLElement=class HTMLElementPlugin extends C3.SDKDOMPluginBase{constructor(opts){super(opts,DOM_COMPONENT_ID);this.AddElementMessageHandler("initial-content",(sdkInst,e)=>sdkInst._OnInitialContent(e));this.AddElementMessageHandler("click",(sdkInst,e)=>sdkInst._OnClick(e));this.AddElementMessageHandler("animationend",(sdkInst,e)=>sdkInst._OnAnimationEnd(e))}Release(){super.Release()}}}
+{const C3=self.C3;C3.Plugins.HTMLElement.Type=class HTMLElementType extends C3.SDKTypeBase{constructor(objectClass){super(objectClass)}Release(){super.Release()}OnCreate(){}}}
+{const C3=self.C3;const C3X=self.C3X;const TAG=0;const CONTENT_STR=1;const CONTENT_TYPE=2;const INITIALLY_VISIBLE=3;const ID=4;const CLASS_NAME=5;const ALLOW_CONTEXT_MENU=6;const STOP_INPUT_EVENTS=7;const SET_COLOR=8;const DEFAULT_COLOR=9;const SET_BACKGROUND_COLOR=10;const DEFAULT_BACKGROUND_COLOR=11;const AUTO_FONT_SIZE=12;const ALLOW_TEXT_SELECTION=13;const STYLE_ATTRIBUTE=14;const DOM_COMPONENT_ID="html-element";C3.Plugins.HTMLElement.Instance=class HTMLElementInstance extends C3.SDKDOMInstanceBase{constructor(inst,
+properties){super(inst,DOM_COMPONENT_ID);this._tag="div";this._htmlContent="";this._textContent="";this._id="";this._className="";this._targetId="";this._targetClass="";this._cssAnimationName="";let initialStr="";this._initialType="html";let allowContextMenu=false;let stopInputEventsMode=0;let setColorStyle=false;let defaultColorStyle=C3.New(C3.Color);let setBackgroundColorStyle=false;let defaultBackgroundColorStyle=C3.New(C3.Color);this._autoFontSize=true;this._autoFontSizeOffset=0;let allowTextSelection=
+false;let styleAttribute="";if(properties){this._tag=properties[TAG]||"div";initialStr=properties[CONTENT_STR];const initialType=properties[CONTENT_TYPE];if(initialType===1)initialStr=C3.New(C3.BBString,initialStr,{convertLineBreaks:true}).toHTML();else if(initialType===2)this._initialType="text";this.GetWorldInfo().SetVisible(properties[INITIALLY_VISIBLE]);this._id=properties[ID];this._className=properties[CLASS_NAME];allowContextMenu=properties[ALLOW_CONTEXT_MENU];stopInputEventsMode=properties[STOP_INPUT_EVENTS];
+setColorStyle=properties[SET_COLOR];defaultColorStyle.setFromJSON(properties[DEFAULT_COLOR]);setBackgroundColorStyle=properties[SET_BACKGROUND_COLOR];defaultBackgroundColorStyle.setFromJSON(properties[DEFAULT_BACKGROUND_COLOR]);this._autoFontSize=properties[AUTO_FONT_SIZE];allowTextSelection=properties[ALLOW_TEXT_SELECTION];styleAttribute=properties[STYLE_ATTRIBUTE]}if(this._initialType==="html")this._htmlContent=initialStr;else this._textContent=initialStr;this.CreateElement({"tag":this._tag,"str":initialStr,
+"type":this._initialType,"id":this._id,"className":this._className,"allow-context-menu":allowContextMenu,"stop-input-events-mode":stopInputEventsMode,"css-color":setColorStyle?defaultColorStyle.getCssRgb():"","css-background-color":setBackgroundColorStyle?defaultBackgroundColorStyle.getCssRgb():"","allow-text-selection":allowTextSelection,"style-attribute":styleAttribute})}Release(){super.Release()}_GetStringContent(str,type){let contentType="html";if(type==="bbcode")str=C3.New(C3.BBString,str,{convertLineBreaks:true}).toHTML();
+else if(type==="text")contentType="text";return{contentType,str}}async _SetContent(str_,type="html",selector="",isAll=false){const {contentType,str}=this._GetStringContent(str_,type);if(!selector)if(contentType==="html"){if(this._initialType==="html"&&this._htmlContent===str)return;this._htmlContent=str}else if(contentType==="text"){if(this._initialType==="text"&&this._textContent===str)return;this._textContent=str}await this._SendHTMLUpdateMessage("set-content",{"str":str,"type":contentType,"selector":selector,
+"is-all":isAll})}async _InsertContent(str_,type="html",atEnd=true,selector="",isAll=false){if(!str_)return;const {contentType,str}=this._GetStringContent(str_,type);await this._SendHTMLUpdateMessage("insert-content",{"str":str,"type":contentType,"at-end":atEnd,"selector":selector,"is-all":isAll})}async _RemoveContent(selector,isClear=false,isAll=false){await this._SendHTMLUpdateMessage("remove-content",{"selector":selector,"is-clear":isClear,"is-all":isAll})}async _SetContentClass(mode,classArr,selector,
+isAll=false){await this._SendHTMLUpdateMessage("set-content-class",{"mode":mode,"class-array":classArr,"selector":selector,"is-all":isAll})}async _SetContentAttribute(mode,attrib,value,selector,isAll=false){await this._SendHTMLUpdateMessage("set-content-attribute",{"mode":mode,"attribute":attrib,"value":value,"selector":selector,"is-all":isAll})}async _SetContentCSSStyle(propName,value,selector,isAll=false){await this._SendHTMLUpdateMessage("set-content-css-style",{"prop":C3.CSSToCamelCase(propName),
+"value":value,"selector":selector,"is-all":isAll})}async _SendHTMLUpdateMessage(name,data){const result=await this.PostToDOMElementAsync(name,data);if(result["isOk"]){this._htmlContent=result["html"];this._textContent=result["text"]}}GetElementState(){return{"html":this._htmlContent}}_OnInitialContent(e){this._htmlContent=e["html"];this._textContent=e["text"]}_GetHTMLContent(){return this._htmlContent}_GetTextContent(){return this._textContent}async _OnClick(e){for(const entry of e["chain"]){this._targetId=
+entry["targetId"];this._targetClass=entry["targetClass"];this.DispatchScriptEvent("click",true,{"targetId":this._targetId,"targetClass":this._targetClass});if(this._targetId)await this.TriggerAsync(C3.Plugins.HTMLElement.Cnds.OnClickedID);if(this._targetClass)await this.TriggerAsync(C3.Plugins.HTMLElement.Cnds.OnClickedClass)}this._targetId="";this._targetClass="";await this.TriggerAsync(C3.Plugins.HTMLElement.Cnds.OnClicked)}async _OnAnimationEnd(e){this._targetId=e["targetId"];this._targetClass=
+e["targetClass"];this._cssAnimationName=e["animationName"];this.DispatchScriptEvent("animationend",true,{"targetId":this._targetId,"targetClass":this._targetClass,"animationEnd":this._cssAnimationName});await this.TriggerAsync(C3.Plugins.HTMLElement.Cnds.OnCSSAnimationEnded);this._targetId="";this._targetClass="";this._cssAnimationName=""}Draw(renderer){}SaveToJson(){return{"t":this._tag,"h":this._htmlContent,"id":this._id,"c":this._className}}LoadFromJson(o){this._tag=o["t"];this._htmlContent=o["h"];
+this._id=o["id"];this._className=o["c"];this.UpdateElementState()}GetPropertyValueByIndex(index){}SetPropertyValueByIndex(index,value){}GetDebuggerProperties(){return[]}GetScriptInterfaceClass(){return self.IHTMLElementInstance}};const map=new WeakMap;const VALID_CONTENT_TYPES=new Set(["html","bbcode","text"]);const VALID_SET_CLASS_MODES=new Set(["add","toggle","remove"]);const VALID_SET_ATTRIBUTE_MODES=new Set(["set","remove"]);self.IHTMLElementInstance=class IHTMLElementInstance extends self.IDOMInstance{constructor(){super();
+map.set(this,self.IInstance._GetInitInst().GetSdkInstance())}setContent(str,type="html",selector="",isAll=false){C3X.RequireString(str);if(!VALID_CONTENT_TYPES.has(type))throw new Error("invalid type");C3X.RequireString(selector);return map.get(this)._SetContent(str,type,selector,!!isAll)}insertContent(str,type="html",atEnd=true,selector="",isAll=false){C3X.RequireString(str);if(!VALID_CONTENT_TYPES.has(type))throw new Error("invalid type");C3X.RequireString(selector);return map.get(this)._InsertContent(str,
+type,!!atEnd,selector,!!isAll)}setContentClass(mode,classArr,selector,isAll=false){if(!VALID_SET_CLASS_MODES.has(mode))throw new Error("invalid mode");if(typeof classArr==="string")classArr=classArr.split(" ");C3X.RequireArray(classArr);C3X.RequireString(selector);return map.get(this)._SetContentClass(mode,classArr,selector,!!isAll)}setContentAttribute(mode,attrib,value,selector,isAll=false){if(!VALID_SET_ATTRIBUTE_MODES.has(mode))throw new Error("invalid type");C3X.RequireString(attrib);value=value.toString();
+C3X.RequireString(selector);return map.get(this)._SetContentAttribute(mode,attrib,value,selector,!!isAll)}setContentCssStyle(propName,value,selector,isAll){C3X.RequireString(propName);value=value.toString();C3X.RequireString(selector);return map.get(this)._SetContentCSSStyle(propName,value,selector,!!isAll)}get htmlContent(){return map.get(this)._GetHTMLContent()}set htmlContent(str){map.get(this)._SetContent(str,"html","",false)}get textContent(){return map.get(this)._GetTextContent()}set textContent(str){map.get(this)._SetContent(str,
+"text","",false)}}}{const C3=self.C3;C3.Plugins.HTMLElement.Cnds={OnClicked(){return true},OnClickedID(id){return C3.equalsNoCase(this._targetId,id)},OnClickedClass(className){const targetClasses=this._targetClass.toLowerCase().split(" ");const testClasses=className.toLowerCase().split(" ");return testClasses.every(c=>targetClasses.includes(c))},OnCSSAnimationEnded(animationName){return C3.equalsNoCase(this._cssAnimationName,animationName)}}}
+{const C3=self.C3;const CONTENT_TYPES=["html","bbcode","text"];const SET_CLASS_MODES=["add","toggle","remove"];const SET_ATTRIBUTE_MODES=["set","remove"];C3.Plugins.HTMLElement.Acts={SetContent(contentType,str,selector,type){return this._SetContent(str,CONTENT_TYPES[contentType],selector,type!==0)},InsertContent(contentType,str,position,selector,type){return this._InsertContent(str,CONTENT_TYPES[contentType],position!==0,selector,type!==0)},RemoveContent(mode,selector,type){return this._RemoveContent(selector,
+mode!==0,type!==0)},SetContentClass(mode,className,selector,type){return this._SetContentClass(SET_CLASS_MODES[mode],className.split(" "),selector,type!==0)},SetContentAttribute(mode,attrib,value,selector,type){return this._SetContentAttribute(SET_ATTRIBUTE_MODES[mode],attrib,value.toString(),selector,type!==0)},SetContentCSSStyle(propName,value,selector,type){return this._SetContentCSSStyle(propName,value,selector,type!==0)}}}
+{const C3=self.C3;C3.Plugins.HTMLElement.Exps={HTMLContent(){return this._htmlContent},TextContent(){return this._textContent},TargetID(){return this._targetId},TargetClass(){return this._targetClass},EscapeHTML(str){return C3.EscapeHTML(str.toString())}}};
+
+}
+
+{
+'use strict';{const C3=self.C3;C3.Plugins.TiledBg=class TiledBgPlugin extends C3.SDKPluginBase{constructor(opts){super(opts)}Release(){super.Release()}}}
+{const C3=self.C3;function WrapModeToStr(wrapMode){switch(wrapMode){case 0:return"clamp-to-edge";case 1:return"repeat";case 2:return"mirror-repeat"}return"repeat"}C3.Plugins.TiledBg.Type=class TiledBgType extends C3.SDKTypeBase{constructor(objectClass,exportData){super(objectClass);this._wrapX="repeat";this._wrapY="repeat";if(exportData){this._wrapX=WrapModeToStr(exportData[0]);this._wrapY=WrapModeToStr(exportData[1])}}Release(){super.Release()}OnCreate(){this.GetImageInfo().LoadAsset(this._runtime)}LoadTextures(renderer){return this.GetImageInfo().LoadStaticTexture(renderer,
+{sampling:this._runtime.GetSampling(),wrapX:this._wrapX,wrapY:this._wrapY})}ReleaseTextures(){this.GetImageInfo().ReleaseTexture()}}}
+{const C3=self.C3;const C3X=self.C3X;const INITIALLY_VISIBLE=0;const ORIGIN=1;const IMAGE_OFFSET_X=4;const IMAGE_OFFSET_Y=5;const IMAGE_SCALE_X=6;const IMAGE_SCALE_Y=7;const IMAGE_ANGLE=8;const tempRect=C3.New(C3.Rect);const tempQuad=C3.New(C3.Quad);const rcTex=C3.New(C3.Rect);const qTex=C3.New(C3.Quad);C3.Plugins.TiledBg.Instance=class TiledBgInstance extends C3.SDKWorldInstanceBase{constructor(inst,properties){super(inst);this._imageOffsetX=0;this._imageOffsetY=0;this._imageScaleX=1;this._imageScaleY=
+1;this._imageAngle=0;this._ownImageInfo=null;if(properties){this.GetWorldInfo().SetVisible(!!properties[INITIALLY_VISIBLE]);this._imageOffsetX=properties[IMAGE_OFFSET_X];this._imageOffsetY=properties[IMAGE_OFFSET_Y];this._imageScaleX=properties[IMAGE_SCALE_X];this._imageScaleY=properties[IMAGE_SCALE_Y];this._imageAngle=C3.toRadians(properties[IMAGE_ANGLE])}}Release(){this._ReleaseOwnImage();super.Release()}_ReleaseOwnImage(){if(this._ownImageInfo){this._ownImageInfo.Release();this._ownImageInfo=null}}CalculateTextureCoordsFor3DFace(areaWidth,
+areaHeight,outQuad){const imageInfo=this.GetCurrentImageInfo();const imageWidth=imageInfo.GetWidth();const imageHeight=imageInfo.GetHeight();const imageOffsetX=this._imageOffsetX/imageWidth;const imageOffsetY=this._imageOffsetY/imageHeight;const imageAngle=this._imageAngle;rcTex.set(0,0,areaWidth/(imageWidth*this._imageScaleX),areaHeight/(imageHeight*this._imageScaleY));rcTex.offset(-imageOffsetX,-imageOffsetY);if(imageAngle===0)outQuad.setFromRect(rcTex);else outQuad.setFromRotatedRect(rcTex,-imageAngle)}Draw(renderer){const imageInfo=
+this.GetCurrentImageInfo();const texture=imageInfo.GetTexture();if(texture===null)return;renderer.SetTexture(texture);const imageWidth=imageInfo.GetWidth();const imageHeight=imageInfo.GetHeight();const imageOffsetX=this._imageOffsetX/imageWidth;const imageOffsetY=this._imageOffsetY/imageHeight;const wi=this.GetWorldInfo();rcTex.set(0,0,wi.GetWidth()/(imageWidth*this._imageScaleX),wi.GetHeight()/(imageHeight*this._imageScaleY));rcTex.offset(-imageOffsetX,-imageOffsetY);if(wi.HasMesh())this._DrawMesh(wi,
+renderer);else this._DrawStandard(wi,renderer)}_DrawStandard(wi,renderer){let quad=wi.GetBoundingQuad();if(this._runtime.IsPixelRoundingEnabled())quad=wi.PixelRoundQuad(quad);if(this._imageAngle===0)renderer.Quad3(quad,rcTex);else{qTex.setFromRotatedRect(rcTex,-this._imageAngle);renderer.Quad4(quad,qTex)}}_DrawMesh(wi,renderer){const transformedMesh=wi.GetTransformedMesh();if(wi.IsMeshChanged()){wi.CalculateBbox(tempRect,tempQuad,false);let quad=tempQuad;if(this._runtime.IsPixelRoundingEnabled())quad=
+wi.PixelRoundQuad(quad);let texCoords=rcTex;if(this._imageAngle!==0){qTex.setFromRotatedRect(rcTex,-this._imageAngle);texCoords=qTex}transformedMesh.CalculateTransformedMesh(wi.GetSourceMesh(),quad,texCoords);wi.SetMeshChanged(false)}transformedMesh.Draw(renderer)}GetCurrentImageInfo(){return this._ownImageInfo||this._objectClass.GetImageInfo()}IsOriginalSizeKnown(){return true}GetTexture(){return this.GetCurrentImageInfo().GetTexture()}_SetMeshChanged(){this.GetWorldInfo().SetMeshChanged(true)}_SetImageOffsetX(x){if(this._imageOffsetX===
+x)return;this._imageOffsetX=x;this._runtime.UpdateRender();this._SetMeshChanged()}_GetImageOffsetX(){return this._imageOffsetX}_SetImageOffsetY(y){if(this._imageOffsetY===y)return;this._imageOffsetY=y;this._runtime.UpdateRender();this._SetMeshChanged()}_GetImageOffsetY(){return this._imageOffsetY}_SetImageScaleX(x){if(this._imageScaleX===x)return;this._imageScaleX=x;this._runtime.UpdateRender();this._SetMeshChanged()}_GetImageScaleX(){return this._imageScaleX}_SetImageScaleY(y){if(this._imageScaleY===
+y)return;this._imageScaleY=y;this._runtime.UpdateRender();this._SetMeshChanged()}_GetImageScaleY(){return this._imageScaleY}_SetImageAngle(a){if(this._imageAngle===a)return;this._imageAngle=a;this._runtime.UpdateRender();this._SetMeshChanged()}_GetImageAngle(){return this._imageAngle}GetPropertyValueByIndex(index){switch(index){case IMAGE_OFFSET_X:return this._GetImageOffsetX();case IMAGE_OFFSET_Y:return this._GetImageOffsetY();case IMAGE_SCALE_X:return this._GetImageScaleX();case IMAGE_SCALE_Y:return this._GetImageScaleY();
+case IMAGE_ANGLE:return this._GetImageAngle()}}SetPropertyValueByIndex(index,value){switch(index){case IMAGE_OFFSET_X:this._SetImageOffsetX(value);break;case IMAGE_OFFSET_Y:this._SetImageOffsetY(value);break;case IMAGE_SCALE_X:this._SetImageScaleX(value);break;case IMAGE_SCALE_Y:this._SetImageScaleY(value);break;case IMAGE_ANGLE:this._SetImageAngle(value);break}}GetScriptInterfaceClass(){return self.ITiledBackgroundInstance}};const map=new WeakMap;self.ITiledBackgroundInstance=class ITiledBackgroundInstance extends self.IWorldInstance{constructor(){super();
+map.set(this,self.IInstance._GetInitInst().GetSdkInstance())}set imageOffsetX(x){C3X.RequireFiniteNumber(x);map.get(this)._SetImageOffsetX(x)}get imageOffsetX(){return map.get(this)._GetImageOffsetX()}set imageOffsetY(y){C3X.RequireFiniteNumber(y);map.get(this)._SetImageOffsetY(y)}get imageOffsetY(){return map.get(this)._GetImageOffsetY()}set imageScaleX(x){C3X.RequireFiniteNumber(x);map.get(this)._SetImageScaleX(x)}get imageScaleX(){return map.get(this)._GetImageScaleX()}set imageScaleY(y){C3X.RequireFiniteNumber(y);
+map.get(this)._SetImageScaleY(y)}get imageScaleY(){return map.get(this)._GetImageScaleY()}set imageAngle(a){C3X.RequireFiniteNumber(a);map.get(this)._SetImageAngle(a)}get imageAngle(){return map.get(this)._GetImageAngle()}set imageAngleDegrees(a){C3X.RequireFiniteNumber(a);map.get(this)._SetImageAngle(C3.toRadians(a))}get imageAngleDegrees(){return C3.toDegrees(map.get(this)._GetImageAngle())}get imageWidth(){return map.get(this).GetCurrentImageInfo().GetWidth()}get imageHeight(){return map.get(this).GetCurrentImageInfo().GetHeight()}}}
+{const C3=self.C3;C3.Plugins.TiledBg.Cnds={OnURLLoaded(){return true},OnURLFailed(){return true}}}
+{const C3=self.C3;C3.Plugins.TiledBg.Acts={SetImageOffsetX(x){this._SetImageOffsetX(x)},SetImageOffsetY(y){this._SetImageOffsetY(y)},SetImageScaleX(x){this._SetImageScaleX(x/100)},SetImageScaleY(y){this._SetImageScaleY(y/100)},SetImageAngle(a){this._SetImageAngle(C3.toRadians(a))},SetEffect(effect){this.GetWorldInfo().SetBlendMode(effect);this._runtime.UpdateRender()},async LoadURL(url,crossOrigin){if(this._ownImageInfo&&this._ownImageInfo.GetURL()===url)return;const runtime=this._runtime;const imageInfo=
+C3.New(C3.ImageInfo);try{await imageInfo.LoadDynamicAsset(runtime,url);if(!imageInfo.IsLoaded())throw new Error("image failed to load");if(this.WasReleased()){imageInfo.Release();return null}const texture=await imageInfo.LoadStaticTexture(runtime.GetRenderer(),{sampling:this._runtime.GetSampling(),wrapX:"repeat",wrapY:"repeat"});if(!texture)return}catch(err){console.error("Load image from URL failed: ",err);this.Trigger(C3.Plugins.TiledBg.Cnds.OnURLFailed);return}if(this.WasReleased()){imageInfo.Release();
+return}this._ReleaseOwnImage();this._ownImageInfo=imageInfo;runtime.UpdateRender();await this.TriggerAsync(C3.Plugins.TiledBg.Cnds.OnURLLoaded)}}}{const C3=self.C3;C3.Plugins.TiledBg.Exps={ImageWidth(){return this.GetCurrentImageInfo().GetWidth()},ImageHeight(){return this.GetCurrentImageInfo().GetHeight()},ImageOffsetX(){return this._imageOffsetX},ImageOffsetY(){return this._imageOffsetY},ImageScaleX(){return this._imageScaleX*100},ImageScaleY(){return this._imageScaleY*100},ImageAngle(){return C3.toDegrees(this._imageAngle)}}};
+
+}
+
+{
 'use strict';{const C3=self.C3;C3.Behaviors.Pin=class PinBehavior extends C3.SDKBehaviorBase{constructor(opts){super(opts)}Release(){super.Release()}}}{const C3=self.C3;C3.Behaviors.Pin.Type=class PinType extends C3.SDKBehaviorTypeBase{constructor(behaviorType){super(behaviorType)}Release(){super.Release()}OnCreate(){}}}
 {const C3=self.C3;C3.Behaviors.Pin.Instance=class PinInstance extends C3.SDKBehaviorInstanceBase{constructor(behInst,properties){super(behInst);this._pinInst=null;this._pinUid=-1;this._mode="";this._propSet=new Set;this._pinDist=0;this._pinAngle=0;this._pinImagePoint=0;this._dx=0;this._dy=0;this._dWidth=0;this._dHeight=0;this._dAngle=0;this._dz=0;this._lastKnownAngle=0;this._destroy=false;if(properties)this._destroy=properties[0];const rt=this._runtime.Dispatcher();this._disposables=new C3.CompositeDisposable(C3.Disposable.From(rt,
 "instancedestroy",e=>this._OnInstanceDestroyed(e.instance)),C3.Disposable.From(rt,"afterload",e=>this._OnAfterLoad()))}Release(){this._pinInst=null;super.Release()}_SetPinInst(inst){if(inst){this._pinInst=inst;this._StartTicking2()}else{this._pinInst=null;this._StopTicking2()}}_Pin(objectClass,mode,propList){if(!objectClass)return;const otherInst=objectClass.GetFirstPicked(this._inst);if(!otherInst)return;this._mode=mode;this._SetPinInst(otherInst);const myWi=this._inst.GetWorldInfo();const otherWi=
@@ -3845,13 +3892,15 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite,
 		C3.Behaviors.Pin,
 		C3.Behaviors.Tween,
+		C3.Behaviors.Anchor,
 		C3.Plugins.TextBox,
 		C3.Plugins.Touch,
 		C3.Plugins.Browser,
-		C3.Behaviors.Anchor,
 		C3.Behaviors.DragnDrop,
 		C3.Behaviors.Bullet,
 		C3.Plugins.Mouse,
+		C3.Plugins.HTMLElement,
+		C3.Plugins.TiledBg,
 		C3.Plugins.System.Cnds.OnLayoutStart,
 		C3.Plugins.Sprite.Acts.SetWidth,
 		C3.Plugins.Dictionary.Acts.AddKey,
@@ -3864,15 +3913,15 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.AJAX.Cnds.OnComplete,
 		C3.Plugins.Json.Acts.Parse,
 		C3.Plugins.AJAX.Exps.LastData,
-		C3.Plugins.Json.Acts.SetNull,
-		C3.Plugins.Json.Acts.SetValue,
-		C3.Plugins.Json.Exps.Get,
 		C3.Plugins.Json.Cnds.ForEach,
 		C3.Plugins.Json.Cnds.CompareValue,
 		C3.Plugins.System.Cnds.For,
 		C3.Plugins.Json.Exps.ArraySize,
-		C3.Plugins.Browser.Acts.ConsoleLog,
+		C3.Plugins.Json.Exps.Get,
 		C3.Plugins.System.Acts.AddVar,
+		C3.Plugins.Arr.Acts.SetSize,
+		C3.Plugins.Arr.Acts.Push,
+		C3.Plugins.Browser.Acts.ConsoleLog,
 		C3.Plugins.System.Acts.GoToLayout,
 		C3.Plugins.Touch.Cnds.OnTouchObject,
 		C3.Behaviors.Tween.Cnds.IsAnyPlaying,
@@ -3880,11 +3929,12 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Acts.WaitForPreviousActions,
 		C3.Plugins.System.Acts.SetVar,
 		C3.Plugins.Text.Acts.SetText,
-		C3.Plugins.Sprite.Acts.LoadURL,
 		C3.Plugins.Dictionary.Exps.Get,
 		C3.Plugins.System.Exps.choose,
+		C3.Plugins.Sprite.Acts.LoadURL,
 		C3.Plugins.Sprite.Acts.SetVisible,
 		C3.Plugins.System.Cnds.IsGroupActive,
+		C3.Plugins.Touch.Cnds.OnTapGestureObject,
 		C3.Plugins.Sprite.Cnds.IsOverlapping,
 		C3.Plugins.System.Cnds.PickAll,
 		C3.Plugins.System.Cnds.ForEach,
@@ -3895,7 +3945,8 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite.Acts.SetInstanceVar,
 		C3.Behaviors.DragnDrop.Cnds.OnDragStart,
 		C3.Behaviors.Bullet.Acts.SetSpeed,
-		C3.Behaviors.DragnDrop.Cnds.OnDrop,
+		C3.Plugins.Touch.Cnds.OnNthTouchEnd,
+		C3.Plugins.Touch.Cnds.IsTouchingObject,
 		C3.Plugins.System.Cnds.IsBetweenAngles,
 		C3.Plugins.Touch.Exps.AngleAt,
 		C3.Plugins.Touch.Exps.SpeedAt,
@@ -3910,10 +3961,11 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite.Exps.Height,
 		C3.Plugins.Sprite.Acts.SetOpacity,
 		C3.Behaviors.Tween.Acts.TweenOneProperty,
-		C3.Plugins.Sprite.Acts.SetSize,
-		C3.Plugins.Sprite.Acts.SetPos,
 		C3.Plugins.System.Acts.SetLayerVisible,
 		C3.Plugins.System.Acts.SetGroupActive,
+		C3.Plugins.System.Acts.Wait,
+		C3.Plugins.Sprite.Acts.SetSize,
+		C3.Plugins.Sprite.Acts.SetPos,
 		C3.Plugins.System.Exps.loopindex,
 		C3.Plugins.System.Acts.CreateObject,
 		C3.Plugins.Sprite.Exps.X,
@@ -3923,7 +3975,6 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Exps.max,
 		C3.Plugins.System.Cnds.Compare,
 		C3.Plugins.Sprite.Acts.MoveToTop,
-		C3.Plugins.System.Acts.Wait,
 		C3.Plugins.System.Exps.layoutname,
 		C3.Plugins.System.Exps.viewportleft,
 		C3.Plugins.System.Exps.viewportright,
@@ -3932,22 +3983,55 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite.Acts.SetScale,
 		C3.Plugins.Sprite.Acts.SetX,
 		C3.Plugins.System.Cnds.OnLayoutEnd,
-		C3.Plugins.Arr.Acts.SetX,
-		C3.Plugins.Sprite.Cnds.IsBoolInstanceVarSet,
-		C3.Plugins.Sprite.Acts.SetBoolInstanceVar,
 		C3.Plugins.System.Cnds.CompareVar,
+		C3.Plugins.System.Exps.left,
+		C3.Plugins.Text.Exps.Text,
+		C3.Plugins.Text.Acts.AppendText,
+		C3.Plugins.System.Cnds.CompareBetween,
+		C3.Plugins.Sprite.Exps.ObjectTypeName,
+		C3.Plugins.Sprite.Cnds.IsBoolInstanceVarSet,
+		C3.Plugins.System.Acts.SubVar,
+		C3.Plugins.System.Exps.len,
+		C3.Plugins.Sprite.Acts.SetBoolInstanceVar,
+		C3.Plugins.Touch.Cnds.OnHoldGestureObject,
 		C3.Plugins.Sprite.Acts.SetAnimFrame,
+		C3.Plugins.System.Cnds.Every,
+		C3.Plugins.TextBox.Acts.SetText,
+		C3.Plugins.Sprite.Acts.SetHeight,
+		C3.Plugins.Sprite.Acts.SetAnimSpeed,
+		C3.Plugins.Sprite.Acts.StopAnim,
+		C3.Plugins.Sprite.Exps.ImagePointX,
+		C3.Plugins.Sprite.Exps.ImagePointY,
+		C3.Plugins.Sprite.Acts.AddChild,
+		C3.Plugins.Sprite.Acts.SetPosToObject,
+		C3.Plugins.Text.Acts.SetPosToObject,
+		C3.Plugins.System.Exps.mid,
+		C3.Plugins.System.Exps.uppercase,
+		C3.Plugins.System.Exps.lowercase,
+		C3.Plugins.Arr.Acts.SetX,
 		C3.Plugins.Text.Acts.SetY,
 		C3.Plugins.Text.Exps.Y,
-		C3.Plugins.Arr.Exps.At,
+		C3.Behaviors.DragnDrop.Cnds.OnDrop,
 		C3.Plugins.TextBox.Acts.SetCSSStyle,
+		C3.Plugins.Sprite.Acts.SubInstanceVar,
+		C3.Plugins.Sprite.Acts.AddInstanceVar,
+		C3.Plugins.System.Cnds.TriggerOnce,
+		C3.Plugins.TextBox.Cnds.OnClicked,
+		C3.Behaviors.Bullet.Acts.SetEnabled,
+		C3.Behaviors.DragnDrop.Acts.SetEnabled,
 		C3.Plugins.TextBox.Acts.SetPos,
 		C3.Plugins.TextBox.Acts.SetVisible,
+		C3.Plugins.System.Cnds.RegexTest,
+		C3.Plugins.TextBox.Exps.Text,
+		C3.Plugins.System.Acts.SetFunctionReturnValue,
+		C3.Plugins.Arr.Exps.Width,
+		C3.Plugins.Arr.Exps.At,
 		C3.Plugins.Text.Exps.X,
 		C3.Plugins.Text.Exps.Width,
 		C3.Plugins.Text.Exps.Height,
 		C3.Plugins.System.Exps.viewportwidth,
 		C3.Plugins.System.Exps.viewportheight,
+		C3.Plugins.Text.Cnds.CompareInstanceVar,
 		C3.Plugins.TextBox.Cnds.CompareText
 	];
 };
@@ -3967,6 +4051,8 @@ self.C3_JsPropNameTable = [
 	{Dict_Age: 0},
 	{Dict_SkidosPass: 0},
 	{Dict_SignUpEmail: 0},
+	{JSON_Interests: 0},
+	{Dict_Avtar: 0},
 	{GetStartedTitile1: 0},
 	{GetStartedSubTitle: 0},
 	{GetStartedTitile2: 0},
@@ -3984,6 +4070,7 @@ self.C3_JsPropNameTable = [
 	{Tween: 0},
 	{InterestBG: 0},
 	{Grade: 0},
+	{ImageUrl: 0},
 	{InterestImageHolder: 0},
 	{TextInterestType: 0},
 	{SubjectsImageHolder: 0},
@@ -3999,12 +4086,17 @@ self.C3_JsPropNameTable = [
 	{BtnNo: 0},
 	{BtnYes: 0},
 	{MascotsPlaceholder_Email: 0},
+	{Anchor: 0},
+	{KeyBG: 0},
+	{MascotsPlaceholder_Pass2: 0},
 	{TextBG: 0},
 	{PlanTitle: 0},
 	{index: 0},
 	{CheckBoxPlan: 0},
 	{PlanSubTitle: 0},
 	{PlanStatements: 0},
+	{PlanTextArray: 0},
+	{Id: 0},
 	{PassStatements: 0},
 	{PassSubTitle: 0},
 	{PassTitle: 0},
@@ -4027,14 +4119,12 @@ self.C3_JsPropNameTable = [
 	{SKIDOSLogo: 0},
 	{UI_Button: 0},
 	{UI_PanelwEdge: 0},
-	{Id: 0},
 	{PlaceholderImageBG: 0},
 	{ID: 0},
 	{loder: 0},
 	{BtnGetStarted: 0},
 	{TextAlreadyAccount: 0},
 	{TextNextBtn: 0},
-	{Anchor: 0},
 	{BtnInfo: 0},
 	{TextInfo: 0},
 	{Tick: 0},
@@ -4072,7 +4162,42 @@ self.C3_JsPropNameTable = [
 	{ScrollPosition: 0},
 	{DictionaryScreens: 0},
 	{EmailPrivacyYesText: 0},
+	{CapsLock: 0},
+	{Digit: 0},
+	{Digits: 0},
+	{letters: 0},
+	{isOpen: 0},
+	{EnteredText: 0},
+	{TYPE: 0},
+	{miniKeyBoard: 0},
+	{KeyCode: 0},
+	{Type: 0},
+	{KeyBlanco: 0},
+	{Name: 0},
+	{Hold: 0},
+	{KeySpace: 0},
+	{KeyReturn: 0},
+	{ABC123: 0},
+	{BackSpace: 0},
+	{StringKB: 0},
+	{Sprite3: 0},
+	{TextErrorEmail: 0},
+	{current_index: 0},
+	{IsDrag: 0},
+	{Image_Carrosol_panel: 0},
+	{IsCurrentDot: 0},
+	{Dots: 0},
+	{HTMLElement: 0},
+	{Panel: 0},
+	{Icon: 0},
+	{Text: 0},
+	{Text1: 0},
+	{Text2: 0},
+	{Button: 0},
+	{id: 0},
+	{Collider: 0},
 	{BtnTweens: 0},
+	{OtherBtn: 0},
 	{isLoading: 0},
 	{ind: 0},
 	{MiddleX: 0},
@@ -4083,15 +4208,21 @@ self.C3_JsPropNameTable = [
 	{PrevLayout: 0},
 	{ScreenNo: 0},
 	{TotalScreens: 0},
-	{current_index: 0},
 	{Scroll_Room_List_Top_Boundary: 0},
 	{Scroll_Room_List_Bot_Boundary: 0},
 	{padding: 0},
-	{dy: 0},
 	{show: 0},
+	{dy: 0},
+	{CHAR_LEN_LIMIT: 0},
+	{CharcterCount: 0},
+	{open: 0},
+	{anim_time: 0},
+	{isOn: 0},
 	{x_coff: 0},
 	{i: 0},
 	{items: 0},
+	{Scroll_Room_List_Left_Boundary: 0},
+	{Scroll_Room_List_Right_Boundary: 0},
 	{start_y: 0},
 	{gap: 0}
 ];
@@ -4218,15 +4349,17 @@ self.C3_ExpressionFuncs = [
 		},
 		() => "data",
 		() => "https://apitest.skidos.com/apis/productservice/v1/game/json?gameid=sdk&l=en_us&version=6.0&platform=iOS",
+		() => "interest-data",
+		() => "https://apitest.skidos.com/apis/productservice/v1/interest?language=en_us&gameid=sdk&version=6.0&platform=iOS",
+		() => "grades-data",
+		() => "https://apitest.skidos.com/apis/productservice/v1/grade?l=en_us&version=6.0",
+		() => "subjects-data",
+		() => "https://apitest.skidos.com/apis/productservice/v1/subject?l=en_us&version=6.0",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => f0();
 		},
 		() => ".",
-		p => {
-			const n0 = p._GetNode(0);
-			return () => n0.ExpObject(".2.Data");
-		},
 		() => ".Type",
 		() => "Onboarding",
 		() => ".SubType",
@@ -4247,13 +4380,17 @@ self.C3_ExpressionFuncs = [
 			return () => n0.ExpObject((and(".Data.", v1.GetValue()) + ".Value"));
 		},
 		() => 1,
+		() => "GetStartedText",
 		() => "Plan",
+		() => "PlanText",
 		() => "SkidosPass",
 		() => "SignUpEmail",
+		() => "SignUpEmailText",
 		() => "Age",
 		() => "Subjects",
 		() => "PickGrade",
 		() => "Interest",
+		() => "Avatar",
 		() => 0.96,
 		() => 0.1,
 		p => {
@@ -4263,17 +4400,11 @@ self.C3_ExpressionFuncs = [
 		},
 		p => {
 			const n0 = p._GetNode(0);
-			const f1 = p._GetNode(1).GetBoundMethod();
-			return () => n0.ExpObject(and("Onboarding_GetStarted_CarouselImage", f1(1, 2, 3)));
-		},
-		p => {
-			const n0 = p._GetNode(0);
 			return () => n0.ExpObject("Onboarding_GetStarted_Header");
 		},
 		p => {
 			const n0 = p._GetNode(0);
-			const f1 = p._GetNode(1).GetBoundMethod();
-			return () => n0.ExpObject(and("Onboarding_GetStarted_CarouselText", f1(1, 2, 3)));
+			return () => n0.ExpObject("Onboarding_GetStarted_Subheader");
 		},
 		p => {
 			const n0 = p._GetNode(0);
@@ -4282,6 +4413,16 @@ self.C3_ExpressionFuncs = [
 		p => {
 			const n0 = p._GetNode(0);
 			return () => n0.ExpObject("Onboarding_GetStarted_LoginText");
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			const f1 = p._GetNode(1).GetBoundMethod();
+			return () => n0.ExpObject(and("Onboarding_GetStartedText_CarouselText", f1(1, 2, 3)));
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			const f1 = p._GetNode(1).GetBoundMethod();
+			return () => n0.ExpObject(and("Onboarding_GetStartedText_CarouselImage", f1(1, 2, 3)));
 		},
 		() => 2,
 		p => {
@@ -4369,6 +4510,10 @@ self.C3_ExpressionFuncs = [
 		},
 		() => 50,
 		() => 0.15,
+		() => "S2_Scroll_Panel",
+		() => "AgeSelectionDialog",
+		() => "AgeSelectionScreen",
+		() => "AgeSelection",
 		() => 320,
 		() => 340,
 		() => 230,
@@ -4377,10 +4522,10 @@ self.C3_ExpressionFuncs = [
 			const n0 = p._GetNode(0);
 			return () => n0.ExpObject();
 		},
-		() => "S2_Scroll_Panel",
-		() => "AgeSelectionDialog",
-		() => "AgeSelectionScreen",
-		() => 15,
+		p => {
+			const n0 = p._GetNode(0);
+			return () => (n0.ExpObject(".") - 1);
+		},
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => (f0() * 70);
@@ -4391,8 +4536,9 @@ self.C3_ExpressionFuncs = [
 			return () => ((n0.ExpObject() + 55) + v1.GetValue());
 		},
 		p => {
-			const f0 = p._GetNode(0).GetBoundMethod();
-			return () => and("Lorem Ipsum-", f0());
+			const n0 = p._GetNode(0);
+			const f1 = p._GetNode(1).GetBoundMethod();
+			return () => n0.ExpObject(and(f1(), ".LocalisedText"));
 		},
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
@@ -4412,8 +4558,6 @@ self.C3_ExpressionFuncs = [
 			const n0 = p._GetNode(0);
 			return () => and("INITIAL GAP: ", n0.ExpInstVar());
 		},
-		() => "clicked continue",
-		() => "AgeSelection",
 		() => 0.9,
 		() => "HUD",
 		p => {
@@ -4429,9 +4573,91 @@ self.C3_ExpressionFuncs = [
 			const n2 = p._GetNode(2);
 			return () => ((n0.ExpObject() + (n1.ExpObject() / 2)) + (n2.ExpObject() / 2));
 		},
+		() => 0.00001,
+		() => "Keyboard",
+		() => "Keyboard Events",
+		() => 30,
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const n1 = p._GetNode(1);
+			const v2 = p._GetNode(2).GetVar();
+			return () => f0(n1.ExpObject(), v2.GetValue());
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			return () => (n0.ExpInstVar() + "_");
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpInstVar_Family();
+		},
+		() => "KeySpace",
+		() => " _",
+		() => "BackSpace",
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const n1 = p._GetNode(1);
+			const f2 = p._GetNode(2).GetBoundMethod();
+			const n3 = p._GetNode(3);
+			return () => f0(n1.ExpObject(), (f2(n3.ExpObject()) - 2));
+		},
+		() => "_",
+		() => "CapsLock",
+		p => {
+			const n0 = p._GetNode(0);
+			return () => ((((n0.ExpInstVar()) === (1) ? 1 : 0)) ? (0) : (1));
+		},
+		() => "KeyReturn",
+		() => "ABC123",
+		() => "Keyboard Functions",
+		() => 600,
+		() => 350,
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const n1 = p._GetNode(1);
+			return () => ((f0(0) + (n1.ExpObject() / 2)) + 50);
+		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const n1 = p._GetNode(1);
+			return () => (f0(0) - (n1.ExpObject() / 2));
+		},
+		() => "Email",
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const n1 = p._GetNode(1);
+			const f2 = p._GetNode(2).GetBoundMethod();
+			const n3 = p._GetNode(3);
+			return () => f0(n1.ExpObject(), (f2(n3.ExpObject()) - 1));
+		},
+		() => 40,
+		p => {
+			const n0 = p._GetNode(0);
+			return () => ((((n0.ExpInstVar()) === (1) ? 1 : 0)) ? ("123") : ("ABC"));
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			const n1 = p._GetNode(1);
+			return () => n0.ExpObject(n1.ExpInstVar());
+		},
+		() => "InputText",
+		p => {
+			const v0 = p._GetNode(0).GetVar();
+			return () => and("Cap:", v0.GetValue());
+		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const n1 = p._GetNode(1);
+			const n2 = p._GetNode(2);
+			return () => f0(n1.ExpInstVar(), (n2.ExpInstVar() - 1), 1);
+		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const n1 = p._GetNode(1);
+			return () => f0(n1.ExpInstVar());
+		},
 		() => 3,
 		() => "Continue",
-		() => "https://www.babyhazelgames.com/assets/uploads/Game/93160_halloweenparty-min.png",
 		() => "https://www.babyhazelgames.com/assets/uploads/Game/68321_250x250_1.png",
 		() => "https://www.babyhazelgames.com/assets/uploads/Game/67640_250x250_1.png",
 		() => "https://www.babyhazelgames.com/assets/uploads/Game/36680_newyearbash-min.png",
@@ -4459,8 +4685,17 @@ self.C3_ExpressionFuncs = [
 			return () => n0.ExpObject("Onboarding_Interest_LoginText");
 		},
 		() => "Scroll Room List by Dragging2",
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			return () => (f0(0) / 3);
+		},
 		() => "Scroll Room List by Mouse Wheel2",
+		() => 800,
 		() => "Limit Scroll2",
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpObject(".");
+		},
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => ((f0() - 1) % 2);
@@ -4491,7 +4726,17 @@ self.C3_ExpressionFuncs = [
 		},
 		p => {
 			const n0 = p._GetNode(0);
+			const f1 = p._GetNode(1).GetBoundMethod();
+			return () => n0.ExpObject(and((f1() - 1), ".PictureUrl"));
+		},
+		p => {
+			const n0 = p._GetNode(0);
 			return () => (n0.ExpInstVar() - 1);
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			const f1 = p._GetNode(1).GetBoundMethod();
+			return () => n0.ExpObject(and((f1() - 1), ".Name"));
 		},
 		p => {
 			const n0 = p._GetNode(0);
@@ -4501,12 +4746,6 @@ self.C3_ExpressionFuncs = [
 			const f0 = p._GetNode(0).GetBoundMethod();
 			const v1 = p._GetNode(1).GetVar();
 			return () => f0(492, ((55 + v1.GetValue()) + 55));
-		},
-		() => 0.000001,
-		p => {
-			const n0 = p._GetNode(0);
-			const n1 = p._GetNode(1);
-			return () => n0.ExpObject((n1.ExpInstVar() - 1));
 		},
 		p => {
 			const n0 = p._GetNode(0);
@@ -4527,10 +4766,25 @@ self.C3_ExpressionFuncs = [
 		() => "Scroll Room List by Dragging3",
 		() => "Scroll Room List by Mouse Wheel3",
 		() => "Limit Scroll3",
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			return () => (f0() - 1);
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			const f1 = p._GetNode(1).GetBoundMethod();
+			return () => n0.ExpObject(and((f1() - 1), ".SubjectImageUrl"));
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			const f1 = p._GetNode(1).GetBoundMethod();
+			return () => n0.ExpObject(and((f1() - 1), ".SubjectName"));
+		},
 		() => "border",
 		() => "0px",
 		() => "outline",
 		() => "font-size",
+		() => "1.05em",
 		() => "1.25em",
 		() => "text-align",
 		() => "center",
@@ -4553,8 +4807,7 @@ self.C3_ExpressionFuncs = [
 		},
 		p => {
 			const n0 = p._GetNode(0);
-			const f1 = p._GetNode(1).GetBoundMethod();
-			return () => n0.ExpObject(and("Onboarding_SignUpEmail_CarouselText", f1(1, 2)));
+			return () => n0.ExpObject("Onboarding_SignUpEmailText_CarouselText1");
 		},
 		p => {
 			const n0 = p._GetNode(0);
@@ -4568,33 +4821,97 @@ self.C3_ExpressionFuncs = [
 			const n0 = p._GetNode(0);
 			return () => n0.ExpObject("Onboarding_SignUpEmail_PolicyText2");
 		},
-		() => "Email",
-		() => 2000,
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpObject("Onboarding_SignUpEmailText_EmailImage_1");
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpObject("Onboarding_SignUpEmailText_EmailImage_2");
+		},
+		() => "Scroll Event",
+		() => -60,
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const f1 = p._GetNode(1).GetBoundMethod();
+			return () => and(and(f0(0), ":::"), f1(0));
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			const n1 = p._GetNode(1);
+			return () => n0.ExpObject(and("Onboarding_SignUpEmailText_CarouselText", n1.ExpInstVar()));
+		},
+		() => -180,
+		p => {
+			const n0 = p._GetNode(0);
+			return () => C3.clamp(n0.ExpObject(), (-289.476563), 57);
+		},
+		() => 57,
+		() => 0.3,
+		() => -289.476563,
+		() => "Overlapp",
+		() => "Please read and accept the policies",
 		() => "Policy",
+		() => "clicked yes",
+		() => "clicked no",
+		() => 2000,
 		() => 93,
 		() => 164,
 		() => "EmailScreen",
-		() => "clicked yes",
-		() => "clicked no",
-		() => "Lorem Ipsum lorem ipsum Lorem Ipsum lorem ipsum Lorem Ipsum lorem ipsum Lorem Ipsum lorem ipsum Lorem Ipsum lorem ipsum Lorem Ipsum lorem ipsum",
+		() => "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$",
+		() => "gi",
+		() => "Please fill the email addrees",
+		() => "Invalid email adderess!",
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpObject("Onboarding_Plan_Header");
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpObject("Onboarding_Plan_Subheader");
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpObject("Onboarding_Plan_ButtonText");
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpObject("Onboarding_Plan_LoginText");
+		},
 		() => "Scroll Room List by Dragging4",
 		() => "Scroll Room List by Mouse Wheel4",
 		() => "Limit Scroll4",
+		p => {
+			const n0 = p._GetNode(0);
+			const v1 = p._GetNode(1).GetVar();
+			const v2 = p._GetNode(2).GetVar();
+			const n3 = p._GetNode(3);
+			const v4 = p._GetNode(4).GetVar();
+			const v5 = p._GetNode(5).GetVar();
+			return () => C3.clamp(n0.ExpObject(), ((v1.GetValue() - v2.GetValue()) - n3.ExpObject()), (v4.GetValue() + v5.GetValue()));
+		},
 		p => {
 			const n0 = p._GetNode(0);
 			const n1 = p._GetNode(1);
 			const v2 = p._GetNode(2).GetVar();
 			return () => (((n0.ExpObject() + n1.ExpObject()) + v2.GetValue()) + 5);
 		},
-		() => 12,
+		p => {
+			const v0 = p._GetNode(0).GetVar();
+			return () => (v0.GetValue() - 1);
+		},
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			return () => (v0.GetValue() + 28);
 		},
 		p => {
+			const v0 = p._GetNode(0).GetVar();
+			return () => (v0.GetValue() - 5);
+		},
+		p => {
 			const n0 = p._GetNode(0);
 			const f1 = p._GetNode(1).GetBoundMethod();
-			return () => n0.ExpObject((f1() - 1));
+			return () => n0.ExpObject(f1());
 		},
 		p => {
 			const n0 = p._GetNode(0);
@@ -4603,23 +4920,35 @@ self.C3_ExpressionFuncs = [
 			return () => ((n0.ExpObject() - (n1.ExpObject() / 2)) - v2.GetValue());
 		},
 		p => {
-			const v0 = p._GetNode(0).GetVar();
-			return () => (v0.GetValue() - 5);
-		},
-		p => {
 			const n0 = p._GetNode(0);
 			const v1 = p._GetNode(1).GetVar();
 			return () => ((n0.ExpObject() / 2) + v1.GetValue());
 		},
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
-			return () => (f0() * 48);
+			return () => ((f0() + 1) * 48);
 		},
 		() => 0.2734,
 		p => {
-			const f0 = p._GetNode(0).GetBoundMethod();
+			const n0 = p._GetNode(0);
+			return () => n0.ExpObject("Onboarding_SkidosPass_Header");
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpObject("Onboarding_SkidosPass_Subheader");
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpObject("Onboarding_SkidosPass_ButtonText");
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpObject("Onboarding_SkidosPass_SkidosPassImage");
+		},
+		p => {
+			const n0 = p._GetNode(0);
 			const v1 = p._GetNode(1).GetVar();
-			return () => f0(477, ((55 + v1.GetValue()) + 55));
+			return () => n0.ExpObject(and("Onboarding_SkidosPass_Text", v1.GetValue()));
 		},
 		() => "PassDialog",
 		() => "Scroll Room List by Dragging5",
@@ -4632,8 +4961,25 @@ self.C3_ExpressionFuncs = [
 			const v1 = p._GetNode(1).GetVar();
 			return () => f0(600, ((55 + v1.GetValue()) + 55));
 		},
+		() => "clicked continue",
 		() => "Pass",
 		() => "CreateProfileDialog",
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpObject("Onboarding_Avatar_Header");
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpObject("Onboarding_Avatar_Subheader");
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpObject("Onboarding_Avatar_ButtonText");
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpObject("Onboarding_Avatar_BottomText");
+		},
 		() => "CreateProfile",
 		() => 246,
 		() => "CreateProfileScreen"
