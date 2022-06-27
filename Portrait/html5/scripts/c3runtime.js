@@ -4032,7 +4032,13 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Exps.viewportwidth,
 		C3.Plugins.System.Exps.viewportheight,
 		C3.Plugins.Text.Cnds.CompareInstanceVar,
-		C3.Plugins.TextBox.Cnds.CompareText
+		C3.Plugins.TextBox.Cnds.CompareText,
+		C3.Behaviors.Bullet.Cnds.CompareSpeed,
+		C3.Plugins.Sprite.Cnds.PickDistance,
+		C3.Plugins.System.Exps.dt,
+		C3.Plugins.Sprite.Cnds.OnCollision,
+		C3.Plugins.Sprite.Acts.Spawn,
+		C3.Behaviors.Pin.Acts.Unpin
 	];
 };
 self.C3_JsPropNameTable = [
@@ -4111,6 +4117,10 @@ self.C3_JsPropNameTable = [
 	{ProfileDialogTitle: 0},
 	{TextContinueProfileDialog: 0},
 	{MascotsPlaceholder3: 0},
+	{IsCurrent: 0},
+	{KidsPhotoHolder: 0},
+	{ImagePos: 0},
+	{Boarder: 0},
 	{emptybar: 0},
 	{filled: 0},
 	{ProgressBar: 0},
@@ -4184,6 +4194,8 @@ self.C3_JsPropNameTable = [
 	{TextErrorEmail: 0},
 	{current_index: 0},
 	{IsDrag: 0},
+	{item_size: 0},
+	{IsTouching: 0},
 	{Image_Carrosol_panel: 0},
 	{IsCurrentDot: 0},
 	{Dots: 0},
@@ -4224,7 +4236,15 @@ self.C3_JsPropNameTable = [
 	{Scroll_Room_List_Left_Boundary: 0},
 	{Scroll_Room_List_Right_Boundary: 0},
 	{start_y: 0},
-	{gap: 0}
+	{gap: 0},
+	{dot_x: 0},
+	{item_count: 0},
+	{item_width: 0},
+	{item_start_x_pos: 0},
+	{y_pos: 0},
+	{item_gap: 0},
+	{dot_width: 0},
+	{dot_gap: 0}
 ];
 }
 
@@ -4980,9 +5000,57 @@ self.C3_ExpressionFuncs = [
 			const n0 = p._GetNode(0);
 			return () => n0.ExpObject("Onboarding_Avatar_BottomText");
 		},
+		() => 140,
+		() => 16,
 		() => "CreateProfile",
 		() => 246,
-		() => "CreateProfileScreen"
+		() => "CreateProfileScreen",
+		() => "Scroll",
+		p => {
+			const n0 = p._GetNode(0);
+			return () => ((-n0.ExpBehavior()) * 1.5);
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			const v1 = p._GetNode(1).GetVar();
+			return () => (n0.ExpObject() - v1.GetValue());
+		},
+		() => 0.2,
+		() => 20,
+		() => -1000,
+		p => {
+			const n0 = p._GetNode(0);
+			const n1 = p._GetNode(1);
+			const n2 = p._GetNode(2);
+			const n3 = p._GetNode(3);
+			const n4 = p._GetNode(4);
+			const n5 = p._GetNode(5);
+			const n6 = p._GetNode(6);
+			return () => C3.clamp(n0.ExpObject(), (((n1.ExpObject() - (n2.ExpObject() / 2)) + n3.ExpObject()) - n4.ExpObject()), (n5.ExpObject() - (n6.ExpObject() / 2)));
+		},
+		p => {
+			const v0 = p._GetNode(0).GetVar();
+			const v1 = p._GetNode(1).GetVar();
+			return () => (v0.GetValue() - (v1.GetValue() / 2));
+		},
+		() => "Imagedots",
+		() => 650,
+		p => {
+			const v0 = p._GetNode(0).GetVar();
+			const v1 = p._GetNode(1).GetVar();
+			return () => (v0.GetValue() + v1.GetValue());
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			const v1 = p._GetNode(1).GetVar();
+			const v2 = p._GetNode(2).GetVar();
+			return () => ((n0.ExpObject() + v1.GetValue()) + v2.GetValue());
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			const v1 = p._GetNode(1).GetVar();
+			return () => (n0.ExpObject() - ((v1.GetValue() - 240) / 2));
+		}
 ];
 
 
